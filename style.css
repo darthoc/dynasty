@@ -475,3 +475,12 @@ main { max-width: 700px; padding: 8px 12px 40px; }
 .top-stars .stars { font-size: 12px !important; letter-spacing: 0; }
 .pvalue { min-width: 92px; text-align: right; }
 .tt-asset .stars { font-size: 12px !important; vertical-align: 1px; }
+
+/* Playoff cut line: one clean neon line under seed 7 (drops the old dashed border) */
+.standings tr.cut td { border-bottom: 0; }
+
+/* Smoother playoff line; stars readable on the purple header */
+.standings tr.cut td { box-shadow: 0 4px 0 0 var(--lime); }
+.hero .stars { background: linear-gradient(90deg, #ffc928 var(--pct), rgba(255,255,255,.35) var(--pct)); -webkit-background-clip: text; background-clip: text; font-size: 17px !important; vertical-align: -1px; }
+
+.nav-link.small { padding: 11px; font-size: 13px; margin-top: 14px; }

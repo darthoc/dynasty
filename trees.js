@@ -223,9 +223,9 @@ async function loadTrees() {
     const title = playerId ? playerName(playerId) : plainName(rootKey);
     document.getElementById("tree-kicker").textContent = "WHAT IT TURNED INTO";
     document.getElementById("tree-title").textContent = title;
-    document.getElementById("tree-sub").textContent = playerId
-      ? playerPos(playerId) + " • VALUE " + (playerValue(playerId) || "-")
-      : "ORIGINALLY " + teamLabel(pickFromKey(rootKey).original).toUpperCase();
+    document.getElementById("tree-sub").innerHTML = playerId
+      ? esc(playerPos(playerId)) + " • " + starsHtml(playerValue(playerId))
+      : "ORIGINALLY " + esc(teamLabel(pickFromKey(rootKey).original).toUpperCase());
     document.title = title + " | Trade Tree";
     document.getElementById("tree-back").innerHTML = "<a href='trees.html'>&larr; ALL TRADE TREES</a>";
 
@@ -293,7 +293,36 @@ async function loadTrees() {
     document.getElementById("tree-search").addEventListener("input", function (e) { draw(e.target.value); });
   }
 
-  if (params.get("team")) showTeam(Number(params.get("team")));
+  // ---------- One specific trade: a tree for what each side sent ----------
+  function showTrade(id) {
+    const trade = data.trades.filter(function (x) { return x.id === id; })[0];
+    document.getElementById("tree-back").innerHTML = "<a href='history.html'>&larr; LEAGUE HISTORY</a>";
+    document.getElementById("tree-kicker").textContent = "TRADE TREE";
+    if (!trade) { document.getElementById("tree-title").textContent = "Trade not found"; return; }
+    const names = Object.keys(trade.sides).map(teamLabel);
+    document.getElementById("tree-title").textContent = names.join(" & ");
+    document.getElementById("tree-sub").textContent = new Date(trade.created).toLocaleDateString(undefined, dateFmt).toUpperCase();
+    document.title = names.join(" & ") + " | Trade Tree";
+
+    const cards = Object.keys(trade.sides).map(function (rid) {
+      const team = Number(rid);
+      const keys = sentKeys(team, trade);
+      if (!keys.length) return "";
+      const g = {
+        trade: trade,
+        keys: keys.map(function (k) {
+          const ev = (events[k] || []).filter(function (e) { return e.trade.id === trade.id; })[0];
+          return { key: k, via: k, to: ev ? ev.to : team };
+        }),
+      };
+      return "<h2 class='section-title'>" + esc(teamLabel(team)) + " sent</h2><div class='tt-card'>" + renderGroup(g, team, {}) + "</div>";
+    });
+    document.getElementById("tree-body").innerHTML = cards.join("") +
+      "<p class='note'>Each branch starts with what that manager sent in the trade. The boxes underneath are what they got back, and what they did with it afterwards.</p>";
+  }
+
+  if (params.get("trade")) showTrade(params.get("trade"));
+  else if (params.get("team")) showTeam(Number(params.get("team")));
   else if (params.get("p") || params.get("k")) showAsset();
   else showList();
 }

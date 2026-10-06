@@ -25,7 +25,8 @@ async function loadHistory() {
         "<div class='asset total'><span>TOTAL</span><span>" + s.total + "</span></div></div>";
     }).join("");
     return "<div class='trade'><div class='trade-date'>" + date + "</div>" +
-      "<div class='moved'>" + h.moved.toLocaleString() + " <span>VALUE MOVED</span></div>" + sides + "</div>";
+      "<div class='moved'>" + h.moved.toLocaleString() + " <span>VALUE MOVED</span></div>" + sides +
+      "<a class='nav-link small' href='trees.html?trade=" + esc(h.id) + "'>See the trade tree &rarr;</a></div>";
   }).join("") || "<p class='note'>No blockbuster trades yet.</p>";
 }
 
