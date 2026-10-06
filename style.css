@@ -213,3 +213,17 @@ main { padding-left: 8px; padding-right: 8px; }
 .asset span:last-child { font-weight: 800; white-space: nowrap; }
 .asset.total { color: var(--grey); font-size: 12px; letter-spacing: 1px; border-bottom: 0; }
 .dim { color: var(--grey); font-size: 12px; }
+
+/* Trade trees */
+.search { width: 100%; padding: 12px; margin-bottom: 12px; background: #14141c; border: 1px solid #2c2c38; border-radius: 6px; color: var(--white); font-size: 16px; }
+.timeline { border-left: 3px solid var(--red); margin-left: 8px; padding-left: 18px; }
+.tl-node { position: relative; padding: 4px 0 22px; }
+.tl-node::before { content: ""; position: absolute; left: -26px; top: 8px; width: 11px; height: 11px; border-radius: 50%; background: var(--white); border: 2px solid var(--red); }
+.tl-node.start::before { background: var(--grey); }
+.tl-node.draft::before { background: #ffd24a; }
+.tl-node.now::before { background: var(--red); }
+.tl-date { color: var(--grey); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+.tl-main { font-size: 18px; font-weight: 800; margin-top: 2px; }
+.tl-main a { border-bottom: 2px solid var(--red); }
+.tl-sub { color: var(--grey); font-size: 12px; line-height: 1.5; margin-top: 4px; }
+a.player { color: inherit; }

@@ -50,7 +50,7 @@ async function loadTeams() {
       pa: points(s.fpts_against, s.fpts_against_decimal),
     };
   });
-  return { league: league, teams: teams };
+  return { league: league, teams: teams, rosters: rosters };
 }
 
 // Best-first order used everywhere: most wins, then most points scored
@@ -134,6 +134,7 @@ async function loadTradeData() {
 
   // Turn each finished draft into: "2026 round 3, originally owned by roster 5" -> player taken
   const results = {};
+  const byPlayer = {}; // player ID -> the draft pick that became him
   await Promise.all(drafts.map(async function (d) {
     if (d.status !== "complete") return;
     const [draft, picks] = await Promise.all([
@@ -142,9 +143,12 @@ async function loadTradeData() {
     ]);
     picks.forEach(function (p) {
       const original = draft.slot_to_roster_id[p.draft_slot];
-      results[d.season + "-" + p.round + "-" + original] = {
+      const hit = {
         playerId: p.player_id, pickNo: p.pick_no, round: p.round,
+        season: d.season, original: original, by: p.roster_id,
       };
+      results[d.season + "-" + p.round + "-" + original] = hit;
+      byPlayer[p.player_id] = hit;
     });
   }));
 
@@ -153,12 +157,13 @@ async function loadTradeData() {
     (Array.isArray(list) ? list : []).forEach(function (t) {
       if (t.type !== "trade" || t.status !== "complete") return;
       const sides = {};
-      t.roster_ids.forEach(function (id) { sides[id] = { players: [], picks: [], faab: 0 }; });
+      t.roster_ids.forEach(function (id) { sides[id] = { players: [], picks: [], faab: 0, from: {} }; });
       Object.keys(t.adds || {}).forEach(function (pid) {
         sides[t.adds[pid]].players.push(pid);
+        sides[t.adds[pid]].from[pid] = (t.drops || {})[pid];
       });
       (t.draft_picks || []).forEach(function (p) {
-        sides[p.owner_id].picks.push({ season: p.season, round: p.round, original: p.roster_id });
+        sides[p.owner_id].picks.push({ season: p.season, round: p.round, original: p.roster_id, from: p.previous_owner_id });
       });
       (t.waiver_budget || []).forEach(function (b) { sides[b.receiver].faab += b.amount; });
       trades.push({ id: t.transaction_id, created: t.created, sides: sides });
@@ -172,6 +177,8 @@ async function loadTradeData() {
     teamById: teamById,
     info: info,
     trades: trades,
+    rosters: base.rosters,
+    pickOf: function (playerId) { return byPlayer[playerId] || null; },
     pickResult: function (season, round, original) {
       return results[season + "-" + round + "-" + original] || null;
     },
