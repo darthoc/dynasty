@@ -113,7 +113,7 @@ async function loadTeam() {
     return "<div class='top-player'>" +
       "<img src='https://sleepercdn.com/content/nfl/players/thumb/" + esc(p.id) + ".jpg' alt='' " +
       "onerror=\"this.style.visibility='hidden'\">" +
-      "<div class='top-meta'>" + esc(p.pos) + " | " + (p.value || "-") + "</div>" +
+      "<div class='top-meta'>" + esc(p.pos) + "</div>" +
       "<div class='top-name'>" + esc(p.name) + "</div></div>";
   }).join("");
 

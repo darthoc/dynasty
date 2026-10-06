@@ -14,6 +14,43 @@ async function loadPicks() {
       (draft.start_time ? " • " + new Date(draft.start_time).toLocaleString() : "")
     : "<b>" + first + " ROOKIE DRAFT</b><br>Not scheduled yet. It opens in Sleeper after the " + data.league.season + " season.";
 
+  // ---- Find the trade behind each moved pick (so we can describe it on hover) ----
+  const tradeData = await loadTradeData();
+  function dealFor(year, round, original) {
+    let found = null;
+    tradeData.trades.forEach(function (tr) {            // oldest first, so the last match is the latest trade
+      Object.keys(tr.sides).forEach(function (rid) {
+        tr.sides[rid].picks.forEach(function (pk) {
+          if (Number(pk.season) === year && pk.round === round && pk.original === original) found = tr;
+        });
+      });
+    });
+    return found;
+  }
+  function pickWorth(pk) {
+    const hit = tradeData.pickResult(pk.season, pk.round, pk.original);
+    if (hit) return tradeData.info[hit.playerId] ? tradeData.info[hit.playerId].value : 0;
+    return tradeData.pickValue(pk.season, pk.round);
+  }
+  function describeDeal(tr) {
+    let moved = 0;
+    const lines = Object.keys(tr.sides).map(function (rid) {
+      const side = tr.sides[rid], items = [];
+      side.players.forEach(function (pid) {
+        const v = tradeData.info[pid];
+        items.push(v ? v.player.name : "a player");
+        moved += v ? v.value : 0;
+      });
+      side.picks.forEach(function (pk) {
+        items.push(data.teamById[pk.original].name + "'s " + pk.season + " " + ordinal(pk.round));
+        moved += pickWorth(pk);
+      });
+      return "<b>" + esc(data.teamById[rid] ? data.teamById[rid].name : "Team " + rid) + "</b> got " + esc(items.join(", "));
+    });
+    const when = new Date(tr.created).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    return { html: "<div class='tip-date'>" + when + "</div>" + lines.join("<br>"), moved: moved };
+  }
+
   // ---- Projected draft order: worst record picks first, same order every round ----
   const order = data.standings.slice().sort(function (a, b) { return bySeed(b, a); });
   document.getElementById("order-title").textContent = "Projected " + first + " Draft Order";
@@ -33,13 +70,30 @@ async function loadPicks() {
       const via = traded
         ? "<div class='via'>traded by <a href='team.html?id=" + t.id + "'>" + esc(t.name) + "</a> <span class='dim'>" + record + "</span></div>"
         : "";
-      return "<div class='slot" + (traded ? " traded" : "") + "'>" +
+      let tag = "div", attrs = "", tip = "";
+      if (traded) {
+        const deal = dealFor(first, round, t.id);
+        if (deal) {
+          const d = describeDeal(deal);
+          const big = d.moved > BIG_TRADE;
+          tip = "<div class='tip'>" + d.html + (big ? "<div class='tip-go'>Tap to open the trade tree \u2192</div>" : "") + "</div>";
+          if (big) attrs = " data-href='trees.html?k=" + first + "-" + round + "-" + t.id + "'";
+        }
+      }
+      return "<" + tag + attrs + " class='slot" + (traded ? " traded" : "") + "'>" +
         "<div class='slot-no'>" + round + "." + String(slot).padStart(2, "0") + "</div>" +
         "<div class='slot-info'><div class='slot-team'>" + esc(headline) + "'s pick" +
         (traded ? "" : " <span class='dim'>" + record + "</span>") + "</div>" + via + "</div>" +
-        "<div class='slot-val'>" + data.slotValue(first, round, slot).toLocaleString() + "</div></div>";
+        "<div class='slot-val'>" + data.slotValue(first, round, slot).toLocaleString() + "</div>" + tip + "</" + tag + ">";
     }).join("");
 
+    document.querySelectorAll("div.slot.traded").forEach(function (s) {
+      s.addEventListener("click", function (e) {
+        if (e.target.closest("a")) return;                       // the "traded by" team link works on its own
+        if (s.dataset.href) location.href = s.dataset.href;      // big trade: open its trade tree
+        else s.classList.toggle("open");                         // smaller trade: show the deal
+      });
+    });
     document.querySelectorAll(".tab").forEach(function (b) {
       b.addEventListener("click", function () { drawRound(Number(b.dataset.round)); });
     });

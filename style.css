@@ -305,3 +305,43 @@ select.search { appearance: none; background-image: linear-gradient(45deg, trans
 .rec-val { font-size: 30px; font-weight: 900; font-style: italic; font-variant-numeric: tabular-nums; }
 .rec-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 6px 0; border-top: 1px solid #23232d; font-variant-numeric: tabular-nums; }
 .rec-row span:last-child { font-weight: 800; white-space: nowrap; }
+
+/* Trade tree (branching) */
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.team-chip { background: #14141c; border: 1px solid #2c2c38; border-radius: 6px; padding: 12px 10px; text-align: center; font-weight: 800; font-size: 14px; }
+.tt-card { background: #14141c; border-radius: 6px; padding: 14px 12px; margin-bottom: 14px; border-top: 3px solid var(--red); overflow-x: auto; }
+.tt-node { margin: 0; }
+.tt-asset { font-weight: 800; font-size: 15px; line-height: 1.35; }
+.tt-asset a { border-bottom: 1px solid var(--grey); }
+.tt-val { color: var(--grey); font-size: 12px; font-weight: 700; }
+.tt-plus { color: var(--red); font-weight: 900; margin: 2px 0; }
+.tt-to { color: #ff8a8a; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }
+.tt-with { color: var(--grey); font-size: 12px; line-height: 1.4; margin-top: 3px; }
+.tt-kids { margin: 8px 0 0 8px; padding-left: 14px; border-left: 2px solid var(--red); }
+.tt-kid { position: relative; padding: 8px 0; }
+.tt-kid::before { content: ""; position: absolute; left: -14px; top: 18px; width: 12px; border-top: 2px solid var(--red); }
+.tt-node.leaf .tt-asset { font-weight: 700; }
+.tt-end { color: var(--grey); font-size: 10px; font-weight: 800; letter-spacing: 1px; margin-top: 3px; }
+
+/* Quieter numbers: values are there if you want them, but they don't shout */
+.pvalue { font-size: 12px; font-weight: 600; color: var(--grey); }
+.slot-val { font-size: 12px; font-weight: 600; color: #6b7280; }
+.pick-total { font-size: 13px; font-weight: 600; color: var(--grey); }
+.asset span:last-child { font-weight: 600; color: var(--grey); font-size: 12px; }
+
+/* Moved picks: hover (or tap) to see the deal */
+.slot { position: relative; }
+a.slot { color: inherit; }
+.slot.traded { cursor: pointer; }
+.slot.traded:hover { background: #14141c; }
+.tip { display: none; position: absolute; left: 52px; right: 0; top: calc(100% - 4px); z-index: 5; background: #1c1c26; border: 1px solid var(--red); border-radius: 6px; padding: 10px 12px; font-size: 12px; line-height: 1.6; box-shadow: 0 6px 18px rgba(0,0,0,.6); }
+.slot.traded:hover .tip, .slot.traded.open .tip { display: block; }
+.tip-date { color: #ff8a8a; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+.tip-go { margin-top: 6px; color: #ff8a8a; font-weight: 800; }
+
+/* Top-5 photo row: keep it in proportion to the rest of the page on wide screens */
+.top5 { padding-left: max(8px, calc((100% - 700px) / 2)); padding-right: max(8px, calc((100% - 700px) / 2)); }
+.top-player img { max-width: 84px; display: block; margin: 0 auto; }
+
+/* Line the header up with the content column on wide screens (no change on phones) */
+.hero { padding-left: max(20px, calc((100% - 700px) / 2 + 8px)); padding-right: max(20px, calc((100% - 700px) / 2 + 8px)); }

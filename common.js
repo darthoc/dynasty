@@ -98,6 +98,9 @@ async function loadScores(league) {
 
 // ---------- Trade + draft data (used by the trade feed and trade trees) ----------
 
+// A trade counts as "big" when the total value of everything exchanged is above this
+const BIG_TRADE = 9000;
+
 const VALUES_URL = "https://api.fantasycalc.com/values/current?isDynasty=true&numQbs=1&numTeams=12&ppr=1";
 
 function ordinal(n) {
@@ -179,6 +182,7 @@ async function loadTradeData() {
     info: info,
     trades: trades,
     rosters: base.rosters,
+    pickResults: results,
     pickOf: function (playerId) { return byPlayer[playerId] || null; },
     pickResult: function (season, round, original) {
       return results[season + "-" + round + "-" + original] || null;
