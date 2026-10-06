@@ -1,0 +1,55 @@
+/* Colors live here so we can change the whole look in one place */
+:root {
+  --red: #d00;
+  --dark: #0b0b0f;
+  --white: #fff;
+  --grey: #9aa0aa;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--dark);
+  color: var(--white);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* The scrolling-style strip across the top */
+.ticker {
+  background: var(--red);
+  color: var(--white);
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 12px;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.hero {
+  padding: 48px 20px;
+  border-bottom: 4px solid var(--red);
+  background: linear-gradient(160deg, #1a1a24, var(--dark));
+}
+
+.kicker {
+  color: var(--grey);
+  letter-spacing: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 8px 0;
+  font-size: 56px;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-style: italic;
+  line-height: 1;
+}
+
+.sub {
+  color: var(--grey);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
