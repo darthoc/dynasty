@@ -28,6 +28,10 @@
 
     <h2 class="section-title">Roster</h2>
     <div id="roster"></div>
+    <a class="nav-link" id="h2h-link" href="h2h.html">Head-to-Head Records &rarr;</a>
+    <script>
+      document.getElementById("h2h-link").href = "h2h.html?team=" + new URLSearchParams(location.search).get("id");
+    </script>
   </main>
 
   <script src="common.js"></script>

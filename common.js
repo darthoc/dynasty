@@ -68,13 +68,13 @@ async function loadRemainingGames(league) {
     return getJSON(API + "/matchups/" + w);
   }));
   const games = [];
-  results.forEach(function (matchups) {
+  results.forEach(function (matchups, index) {
     const byMatch = {};
     matchups.forEach(function (m) {
       (byMatch[m.matchup_id] = byMatch[m.matchup_id] || []).push(m.roster_id);
     });
     Object.keys(byMatch).forEach(function (id) {
-      if (byMatch[id].length === 2) games.push({ a: byMatch[id][0], b: byMatch[id][1] });
+      if (byMatch[id].length === 2) games.push({ a: byMatch[id][0], b: byMatch[id][1], week: weeks[index] });
     });
   });
   return games;
@@ -255,4 +255,32 @@ async function loadPickData() {
       return drafts.filter(function (d) { return Number(d.season) === year; })[0] || null;
     },
   };
+}
+
+
+// Every game that has been played: [{ week, a: { id, points }, b: { id, points } }]
+async function loadGames(league) {
+  const weeks = [];
+  for (let w = 1; w <= league.settings.last_scored_leg; w++) weeks.push(w);
+  const results = await Promise.all(weeks.map(function (w) {
+    return getJSON(API + "/matchups/" + w);
+  }));
+  const games = [];
+  results.forEach(function (matchups, index) {
+    const byMatch = {};
+    matchups.forEach(function (m) {
+      if (m.matchup_id === null || m.matchup_id === undefined) return; // a bye week
+      (byMatch[m.matchup_id] = byMatch[m.matchup_id] || []).push(m);
+    });
+    Object.keys(byMatch).forEach(function (id) {
+      const pair = byMatch[id];
+      if (pair.length !== 2) return;
+      games.push({
+        week: weeks[index],
+        a: { id: pair[0].roster_id, points: pair[0].points },
+        b: { id: pair[1].roster_id, points: pair[1].points },
+      });
+    });
+  });
+  return games;
 }

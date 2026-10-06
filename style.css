@@ -277,3 +277,21 @@ a.player { color: inherit; }
 .bar-fill { height: 100%; background: var(--red); }
 .blurb { margin-top: 10px; padding-top: 10px; border-top: 1px solid #2c2c38; font-size: 14px; line-height: 1.5; }
 .blurb.empty { color: var(--grey); font-style: italic; }
+
+/* Head-to-head */
+select.search { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--grey) 50%), linear-gradient(135deg, var(--grey) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; font-weight: 800; }
+.callouts { display: grid; gap: 10px; margin-bottom: 24px; }
+.callout { background: #14141c; border-left: 4px solid #ffd24a; border-radius: 6px; padding: 12px 14px; font-size: 14px; line-height: 1.5; }
+.callout-label { color: var(--grey); font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-bottom: 4px; }
+.h2h-card { background: #14141c; border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+.h2h-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.h2h-name { flex: 1; font-weight: 800; font-size: 16px; }
+.h2h-name a { border-bottom: 2px solid var(--red); }
+.h2h-rec { font-size: 26px; font-weight: 900; font-style: italic; }
+.h2h-rec.good { color: #3ddc84; }
+.h2h-rec.bad { color: #ff5a5a; }
+.game { font-size: 13px; padding: 5px 0; border-top: 1px solid #23232d; }
+.res { display: inline-block; width: 20px; text-align: center; font-weight: 900; border-radius: 3px; margin-right: 4px; }
+.res.w { background: #3ddc84; color: #04210f; }
+.res.l { background: #ff5a5a; color: #2a0505; }
+.res.t { background: var(--grey); color: #111; }
