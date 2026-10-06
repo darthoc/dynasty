@@ -94,3 +94,89 @@ async function loadScores(league) {
   });
   return scores;
 }
+
+// ---------- Trade + draft data (used by the trade feed and trade trees) ----------
+
+const VALUES_URL = "https://api.fantasycalc.com/values/current?isDynasty=true&numQbs=1&numTeams=12&ppr=1";
+
+function ordinal(n) {
+  const s = ["th", "st", "nd", "rd"], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+// Loads everything about trades. Returns:
+//   teams / teamById  - names
+//   info              - FantasyCalc info by Sleeper player ID (name, position, value)
+//   pickResult(season, round, originalRosterId) - the player a pick became, or null
+//   pickValue(season, round) - FantasyCalc value of a future pick (0 if unknown)
+//   trades            - oldest first: { id, created, sides: { rosterId: { players, picks, faab } } }
+async function loadTradeData() {
+  const base = await loadTeams();
+  const league = base.league;
+  const teamById = {};
+  base.teams.forEach(function (t) { teamById[t.id] = t; });
+
+  const weeks = [];
+  for (let w = 0; w <= 18; w++) weeks.push(w);
+  const [values, drafts, ...weekly] = await Promise.all([
+    getJSON(VALUES_URL),
+    getJSON(API + "/drafts"),
+  ].concat(weeks.map(function (w) {
+    return getJSON(API + "/transactions/" + w).catch(function () { return []; });
+  })));
+
+  const info = {};
+  const pickValues = {};
+  values.forEach(function (v) {
+    if (v.player.position === "PICK") pickValues[v.player.name] = v.value;
+    else info[v.player.sleeperId] = v;
+  });
+
+  // Turn each finished draft into: "2026 round 3, originally owned by roster 5" -> player taken
+  const results = {};
+  await Promise.all(drafts.map(async function (d) {
+    if (d.status !== "complete") return;
+    const [draft, picks] = await Promise.all([
+      getJSON("https://api.sleeper.app/v1/draft/" + d.draft_id),
+      getJSON("https://api.sleeper.app/v1/draft/" + d.draft_id + "/picks"),
+    ]);
+    picks.forEach(function (p) {
+      const original = draft.slot_to_roster_id[p.draft_slot];
+      results[d.season + "-" + p.round + "-" + original] = {
+        playerId: p.player_id, pickNo: p.pick_no, round: p.round,
+      };
+    });
+  }));
+
+  const trades = [];
+  weekly.forEach(function (list) {
+    (Array.isArray(list) ? list : []).forEach(function (t) {
+      if (t.type !== "trade" || t.status !== "complete") return;
+      const sides = {};
+      t.roster_ids.forEach(function (id) { sides[id] = { players: [], picks: [], faab: 0 }; });
+      Object.keys(t.adds || {}).forEach(function (pid) {
+        sides[t.adds[pid]].players.push(pid);
+      });
+      (t.draft_picks || []).forEach(function (p) {
+        sides[p.owner_id].picks.push({ season: p.season, round: p.round, original: p.roster_id });
+      });
+      (t.waiver_budget || []).forEach(function (b) { sides[b.receiver].faab += b.amount; });
+      trades.push({ id: t.transaction_id, created: t.created, sides: sides });
+    });
+  });
+  trades.sort(function (a, b) { return a.created - b.created; });
+
+  return {
+    league: league,
+    teams: base.teams,
+    teamById: teamById,
+    info: info,
+    trades: trades,
+    pickResult: function (season, round, original) {
+      return results[season + "-" + round + "-" + original] || null;
+    },
+    pickValue: function (season, round) {
+      return pickValues[season + " " + ordinal(round)] || 0;
+    },
+  };
+}
