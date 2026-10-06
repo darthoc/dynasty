@@ -1,0 +1,120 @@
+[
+  {
+    "id": "1411454366417764352",
+    "created": 1790879453810,
+    "moved": 9404,
+    "frozenAt": 1791306149323,
+    "sides": [
+      {
+        "teamId": 3,
+        "team": "Alex",
+        "items": [
+          {
+            "type": "player",
+            "id": "8137",
+            "name": "George Pickens",
+            "pos": "WR",
+            "nflTeam": "DAL",
+            "value": 3850
+          },
+          {
+            "type": "pick",
+            "name": "2027 3rd-round pick",
+            "originalTeam": "shneer13",
+            "value": 984
+          }
+        ],
+        "total": 4834
+      },
+      {
+        "teamId": 9,
+        "team": "shneer13",
+        "items": [
+          {
+            "type": "player",
+            "id": "11631",
+            "name": "Brian Thomas",
+            "pos": "WR",
+            "nflTeam": "JAX",
+            "value": 1823
+          },
+          {
+            "type": "pick",
+            "name": "2027 1st-round pick",
+            "originalTeam": "Alex",
+            "value": 2747
+          }
+        ],
+        "total": 4570
+      }
+    ]
+  },
+  {
+    "id": "1412158535382368256",
+    "created": 1791047340773,
+    "moved": 25450,
+    "frozenAt": 1791306149323,
+    "sides": [
+      {
+        "teamId": 1,
+        "team": "Abergil",
+        "items": [
+          {
+            "type": "player",
+            "id": "8130",
+            "name": "Trey McBride",
+            "pos": "TE",
+            "nflTeam": "ARI",
+            "value": 6076
+          },
+          {
+            "type": "player",
+            "id": "11625",
+            "name": "Adonai Mitchell",
+            "pos": "WR",
+            "nflTeam": "NYJ",
+            "value": 1226
+          },
+          {
+            "type": "player",
+            "id": "13286",
+            "name": "Jadarian Price",
+            "pos": "RB",
+            "nflTeam": "SEA",
+            "value": 2694
+          },
+          {
+            "type": "pick",
+            "name": "2027 1st-round pick",
+            "originalTeam": "Bass & Bench",
+            "value": 2747
+          }
+        ],
+        "total": 12743
+      },
+      {
+        "teamId": 12,
+        "team": "Bass & Bench",
+        "items": [
+          {
+            "type": "player",
+            "id": "4199",
+            "name": "Aaron Jones",
+            "pos": "RB",
+            "nflTeam": "MIN",
+            "value": 1680
+          },
+          {
+            "type": "player",
+            "id": "9221",
+            "name": "Jahmyr Gibbs",
+            "pos": "RB",
+            "nflTeam": "DET",
+            "value": 11027
+          }
+        ],
+        "total": 12707
+      }
+    ]
+  }
+]

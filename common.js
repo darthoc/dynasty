@@ -24,7 +24,7 @@ function points(whole, decimal) {
 
 // A team's display name: custom team name if they set one, else their username
 function teamName(owner) {
-  return (owner && ((owner.metadata && owner.metadata.team_name) || owner.display_name)) || "Unknown";
+  return ((owner && ((owner.metadata && owner.metadata.team_name) || owner.display_name)) || "Unknown").trim();
 }
 
 // Loads every team with name, record and points, plus the league settings.

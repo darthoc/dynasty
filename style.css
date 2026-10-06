@@ -227,3 +227,8 @@ main { padding-left: 8px; padding-right: 8px; }
 .tl-main a { border-bottom: 2px solid var(--red); }
 .tl-sub { color: var(--grey); font-size: 12px; line-height: 1.5; margin-top: 4px; }
 a.player { color: inherit; }
+
+/* League history */
+.moved { font-size: 34px; font-weight: 900; font-style: italic; line-height: 1; margin-bottom: 12px; }
+.moved span { font-size: 11px; font-style: normal; letter-spacing: 2px; color: var(--grey); }
+.tlink { border-bottom: 1px solid var(--grey); }
