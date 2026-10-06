@@ -26,13 +26,17 @@ async function loadPicks() {
     document.getElementById("order-list").innerHTML = order.map(function (t, i) {
       const slot = i + 1;
       const owner = data.ownerOf(first, round, t.id);
-      const via = owner !== t.id
-        ? "<div class='via'>owned by <a href='team.html?id=" + owner + "'>" + esc(data.teamById[owner].name) + "</a></div>"
+      const traded = owner !== t.id;
+      const record = t.wins + "-" + t.losses + (t.ties ? "-" + t.ties : "");
+      // Traded picks lead with whoever owns them now; the original team goes underneath
+      const headline = traded ? data.teamById[owner].name : t.name;
+      const via = traded
+        ? "<div class='via'>traded by <a href='team.html?id=" + t.id + "'>" + esc(t.name) + "</a> <span class='dim'>" + record + "</span></div>"
         : "";
-      return "<div class='slot" + (owner !== t.id ? " traded" : "") + "'>" +
+      return "<div class='slot" + (traded ? " traded" : "") + "'>" +
         "<div class='slot-no'>" + round + "." + String(slot).padStart(2, "0") + "</div>" +
-        "<div class='slot-info'><div class='slot-team'>" + esc(t.name) + "'s pick <span class='dim'>" +
-        t.wins + "-" + t.losses + (t.ties ? "-" + t.ties : "") + "</span></div>" + via + "</div>" +
+        "<div class='slot-info'><div class='slot-team'>" + esc(headline) + "'s pick" +
+        (traded ? "" : " <span class='dim'>" + record + "</span>") + "</div>" + via + "</div>" +
         "<div class='slot-val'>" + data.slotValue(first, round, slot).toLocaleString() + "</div></div>";
     }).join("");
 
