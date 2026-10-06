@@ -78,3 +78,19 @@ async function loadRemainingGames(league) {
   });
   return games;
 }
+
+// Every score each team has put up this season: { rosterId: [week1, week2, ...] }
+async function loadScores(league) {
+  const weeks = [];
+  for (let w = 1; w <= league.settings.last_scored_leg; w++) weeks.push(w);
+  const results = await Promise.all(weeks.map(function (w) {
+    return getJSON(API + "/matchups/" + w);
+  }));
+  const scores = {};
+  results.forEach(function (matchups) {
+    matchups.forEach(function (m) {
+      (scores[m.roster_id] = scores[m.roster_id] || []).push(m.points);
+    });
+  });
+  return scores;
+}
