@@ -75,6 +75,25 @@ async function loadTeam() {
       "<div class='badge-label'>" + b[0] + "</div></div>";
   }).join("");
 
+  // ---- Roster tiers: how many players fall into each value bracket ----
+  const TIERS = [
+    { name: "Elite", min: 7000, color: "#ffd24a" },
+    { name: "Star", min: 4000, color: "#c77dff" },
+    { name: "Starter", min: 1500, color: "#4aa8ff" },
+    { name: "Depth", min: 0, color: "#8a8f99" },
+  ];
+  const tierCounts = TIERS.map(function () { return 0; });
+  players.forEach(function (p) {
+    for (let i = 0; i < TIERS.length; i++) {
+      if (p.value >= TIERS[i].min) { tierCounts[i]++; break; }
+    }
+  });
+  document.getElementById("tiers").innerHTML = TIERS.map(function (t, i) {
+    return "<div class='tier'><div class='tier-gem' style='background:" + t.color + "'></div>" +
+      "<div class='tier-count'>" + tierCounts[i] + "</div>" +
+      "<div class='tier-name'>" + t.name.toUpperCase() + "</div></div>";
+  }).join("");
+
   // ---- Position-group rankings: total value at each position, ranked among 12 teams ----
   function posValue(r, pos) {
     return (r.players || []).reduce(function (total, id) {

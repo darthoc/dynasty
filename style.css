@@ -178,3 +178,10 @@ a { color: inherit; text-decoration: none; }
 .rank-place.good { color: #3ddc84; }
 .rank-place.bad { color: #ff5a5a; }
 .rank-place.mid { color: var(--white); }
+
+/* Roster tiers */
+.tiers { display: flex; margin-bottom: 28px; }
+.tier { flex: 1; text-align: center; }
+.tier-gem { width: 18px; height: 18px; margin: 0 auto 6px; transform: rotate(45deg); border-radius: 3px; }
+.tier-count { font-size: 26px; font-weight: 900; line-height: 1; }
+.tier-name { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: var(--grey); margin-top: 4px; }
