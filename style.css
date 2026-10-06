@@ -105,3 +105,27 @@ main {
   color: var(--grey);
   width: 28px;
 }
+
+a { color: inherit; text-decoration: none; }
+.standings td a { border-bottom: 2px solid var(--red); }
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #23232d;
+}
+
+.player img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #23232d;
+}
+
+.pinfo { flex: 1; }
+.pname { font-weight: 800; }
+.pmeta { color: var(--grey); font-size: 12px; letter-spacing: 1px; margin-top: 2px; }
+.pvalue { font-weight: 900; font-size: 18px; font-variant-numeric: tabular-nums; }
