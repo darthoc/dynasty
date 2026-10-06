@@ -75,6 +75,21 @@ async function loadTeam() {
       "<div class='badge-label'>" + b[0] + "</div></div>";
   }).join("");
 
+  // ---- Position-group rankings: total value at each position, ranked among 12 teams ----
+  function posValue(r, pos) {
+    return (r.players || []).reduce(function (total, id) {
+      return total + (info[id] && info[id].player.position === pos ? info[id].value : 0);
+    }, 0);
+  }
+  document.getElementById("ranks").innerHTML = ["QB", "RB", "WR", "TE"].map(function (pos) {
+    const myValue = posValue(roster, pos);
+    const place = 1 + rosters.filter(function (r) { return posValue(r, pos) > myValue; }).length;
+    const tone = place <= 4 ? "good" : place >= 9 ? "bad" : "mid";
+    return "<div class='rank-row'><span>" + pos + "</span>" +
+      "<span class='rank-val'>" + myValue + "</span>" +
+      "<span class='rank-place " + tone + "'>" + ordinal(place) + "</span></div>";
+  }).join("");
+
   document.getElementById("top5").innerHTML = players.slice(0, 5).map(function (p) {
     return "<div class='top-player'>" +
       "<img src='https://sleepercdn.com/content/nfl/players/thumb/" + esc(p.id) + ".jpg' alt='' " +

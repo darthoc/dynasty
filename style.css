@@ -161,3 +161,20 @@ a { color: inherit; text-decoration: none; }
 }
 .top-meta { font-size: 10px; color: var(--grey); font-weight: 700; margin-top: 6px; letter-spacing: 0.5px; }
 .top-name { font-size: 12px; font-weight: 800; margin-top: 2px; line-height: 1.2; }
+
+/* Position-group rankings */
+.ranks { margin-bottom: 28px; }
+.rank-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 4px;
+  border-bottom: 1px solid #23232d;
+  font-size: 18px;
+  font-weight: 800;
+}
+.rank-row span:first-child { flex: 1; }
+.rank-val { color: var(--grey); font-size: 14px; margin-right: 16px; font-variant-numeric: tabular-nums; }
+.rank-place { min-width: 48px; text-align: right; font-weight: 900; }
+.rank-place.good { color: #3ddc84; }
+.rank-place.bad { color: #ff5a5a; }
+.rank-place.mid { color: var(--white); }
