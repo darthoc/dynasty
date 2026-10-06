@@ -2,7 +2,8 @@
 
 async function loadLeague() {
   const league = await getJSON(API);
-  document.getElementById("league-name").textContent = league.name;
+  const nameEl = document.getElementById("league-name");
+  if (nameEl) nameEl.textContent = league.name;
   document.getElementById("league-sub").textContent =
     league.season + " SEASON • " + league.total_rosters + " TEAMS";
 }
@@ -44,7 +45,8 @@ async function loadStandings() {
 }
 
 loadLeague().catch(function () {
-  document.getElementById("league-name").textContent = "Couldn't reach Sleeper";
+  const nameEl = document.getElementById("league-name");
+  if (nameEl) nameEl.textContent = "Couldn't reach Sleeper";
 });
 loadStandings().catch(function () {
   document.getElementById("standings-body").innerHTML =

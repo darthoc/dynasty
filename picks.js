@@ -76,8 +76,8 @@ async function loadPicks() {
         if (deal) {
           const d = describeDeal(deal);
           const big = d.moved > BIG_TRADE;
-          tip = "<div class='tip'>" + d.html + (big ? "<div class='tip-go'>Tap to open the trade tree \u2192</div>" : "") + "</div>";
-          if (big) attrs = " data-href='trees.html?k=" + first + "-" + round + "-" + t.id + "'";
+          tip = "<div class='tip'><button class='tip-x' aria-label='Close'>\u00D7</button>" + d.html +
+            (big ? "<a class='tip-go' href='trees.html?k=" + first + "-" + round + "-" + t.id + "'>Open the trade tree \u2192</a>" : "") + "</div>";
         }
       }
       return "<" + tag + attrs + " class='slot" + (traded ? " traded" : "") + "'>" +
@@ -89,10 +89,15 @@ async function loadPicks() {
 
     document.querySelectorAll("div.slot.traded").forEach(function (s) {
       s.addEventListener("click", function (e) {
-        if (e.target.closest("a")) return;                       // the "traded by" team link works on its own
-        if (s.dataset.href) location.href = s.dataset.href;      // big trade: open its trade tree
-        else s.classList.toggle("open");                         // smaller trade: show the deal
+        if (e.target.closest("a")) return;                         // team links and the tree link work on their own
+        if (e.target.closest(".tip-x")) {                          // the X closes it (and stops hover re-opening it)
+          s.classList.remove("open"); s.classList.add("dismissed"); return;
+        }
+        const wasOpen = s.classList.contains("open");
+        document.querySelectorAll(".slot.traded.open").forEach(function (o) { o.classList.remove("open"); });
+        if (!wasOpen) { s.classList.add("open"); s.classList.remove("dismissed"); }
       });
+      s.addEventListener("mouseleave", function () { s.classList.remove("dismissed"); });
     });
     document.querySelectorAll(".tab").forEach(function (b) {
       b.addEventListener("click", function () { drawRound(Number(b.dataset.round)); });
@@ -137,4 +142,15 @@ async function loadPicks() {
 loadPicks().catch(function (e) {
   document.getElementById("pick-cards").textContent = "Couldn't load picks";
   console.error(e);
+});
+
+// Tap anywhere else (or press Esc) to close an open pick popup
+const pickPopupCloser = true;
+document.addEventListener("click", function (e) {
+  if (!e.target.closest(".slot.traded")) {
+    document.querySelectorAll(".slot.traded.open").forEach(function (s) { s.classList.remove("open"); });
+  }
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") document.querySelectorAll(".slot.traded.open").forEach(function (s) { s.classList.remove("open"); });
 });

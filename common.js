@@ -301,3 +301,68 @@ function starsHtml(value) {
   const s = starRating(value);
   return "<span class='stars' style='--s:" + s + "' title='" + s + " out of 5'>\u2605\u2605\u2605\u2605\u2605</span>";
 }
+
+// ---------- Site navigation (added to the top of every page) ----------
+(function () {
+  const sections = [
+    { name: "Overview", pages: ["index.html"], subs: [["Dashboard", "index.html"]] },
+    { name: "League", pages: ["standings.html", "playoffs.html", "power.html", "h2h.html", "team.html"],
+      subs: [["Standings", "standings.html"], ["Playoff Race", "playoffs.html"], ["Power Rankings", "power.html"], ["Head-to-Head", "h2h.html"]] },
+    { name: "Trades", pages: ["trades.html", "trees.html", "history.html"],
+      subs: [["Trade Tracker", "trades.html"], ["Trade Trees", "trees.html"], ["League History", "history.html"]] },
+    { name: "Draft", pages: ["picks.html"], subs: [["Pick Tracker", "picks.html"]] },
+    { name: "Records", pages: ["records.html"], subs: [["Record Book", "records.html"]] },
+  ];
+  const file = location.pathname.split("/").pop() || "index.html";
+  const current = sections.filter(function (s) { return s.pages.indexOf(file) !== -1; })[0] || sections[0];
+
+  const tabs = sections.map(function (s) {
+    return "<a class='tab-link" + (s === current ? " on" : "") + "' href='" + s.subs[0][1] + "'>" + s.name + "</a>";
+  }).join("");
+  const subs = current.subs.length > 1
+    ? "<div class='subnav'><div class='subnav-in'>" + current.subs.map(function (p) {
+        return "<a class='sub-link" + (p[1] === file ? " on" : "") + "' href='" + p[1] + "'>" + p[0] + "</a>";
+      }).join("") + "</div></div>"
+    : "";
+
+  document.body.insertAdjacentHTML("afterbegin",
+    "<header class='topnav'><div class='topnav-in'><a class='brand' id='brand' href='index.html'>DYNASTY</a>" +
+    "<nav class='tabs'>" + tabs + "</nav></div></header>" + subs);
+
+  // Use the league's real name from Sleeper
+  getJSON(API).then(function (league) {
+    document.getElementById("brand").textContent = league.name.toUpperCase();
+  }).catch(function () {});
+})();
+
+
+// ---------- Power ranking formula (used by the Power Rankings page and the dashboard) ----------
+const POWER_WEIGHTS = { record: 30, points: 30, value: 40 };
+
+// Turn numbers into 0-100 scores: lowest becomes 0, highest becomes 100
+function scaleTo100(values) {
+  const lo = Math.min.apply(null, values);
+  const hi = Math.max.apply(null, values);
+  return values.map(function (v) { return hi === lo ? 50 : ((v - lo) / (hi - lo)) * 100; });
+}
+
+// Adds rosterValue, winPct, sRecord, sPoints, sValue and score to each team; returns them best first
+function computePower(teams, rosters, values) {
+  const valueById = {};
+  values.forEach(function (v) { if (v.player.sleeperId) valueById[v.player.sleeperId] = v.value; });
+  const rosterOf = {};
+  rosters.forEach(function (r) { rosterOf[r.roster_id] = r; });
+  teams.forEach(function (t) {
+    t.rosterValue = (rosterOf[t.id].players || []).reduce(function (sum, id) { return sum + (valueById[id] || 0); }, 0);
+    const games = t.wins + t.losses + t.ties;
+    t.winPct = games ? (t.wins + t.ties / 2) / games : 0;
+  });
+  const rec = scaleTo100(teams.map(function (t) { return t.winPct; }));
+  const pts = scaleTo100(teams.map(function (t) { return t.pf; }));
+  const val = scaleTo100(teams.map(function (t) { return t.rosterValue; }));
+  teams.forEach(function (t, i) {
+    t.sRecord = rec[i]; t.sPoints = pts[i]; t.sValue = val[i];
+    t.score = (rec[i] * POWER_WEIGHTS.record + pts[i] * POWER_WEIGHTS.points + val[i] * POWER_WEIGHTS.value) / 100;
+  });
+  return teams.sort(function (a, b) { return b.score - a.score; });
+}
