@@ -30,17 +30,58 @@ async function loadTeam() {
   const info = {};
   values.forEach(function (v) { info[v.player.sleeperId] = v; });
 
+  function valueOf(id) { return info[id] ? info[id].value : 0; }
+
   const players = (roster.players || []).map(function (id) {
     const v = info[id];
+    const isTeam = /^[A-Z]{2,3}$/.test(id); // team defenses are stored like "LAR"
     return {
       id: id,
-      name: v ? v.player.name : "Player #" + id,
-      pos: v ? v.player.position : "?",
+      name: v ? v.player.name : isTeam ? id + " Defense" : "Player #" + id,
+      pos: v ? v.player.position : isTeam ? "DEF" : "?",
       age: v && v.player.maybeAge ? v.player.maybeAge.toFixed(0) : "-",
-      value: v ? v.value : 0,
+      value: valueOf(id),
     };
   });
   players.sort(function (a, b) { return b.value - a.value; });
+
+  // ---- Hero card: rank this team against all 12 on three measures ----
+  function sum(ids) {
+    return ids.reduce(function (total, id) { return total + valueOf(id); }, 0);
+  }
+  function measures(r) {
+    const all = r.players || [];
+    const starters = r.starters || [];
+    return {
+      value: sum(all),
+      starters: sum(starters),
+      bench: sum(all.filter(function (id) { return starters.indexOf(id) === -1; })),
+    };
+  }
+  const mine = measures(roster);
+  const others = rosters.map(measures);
+  function rank(key) {
+    return 1 + others.filter(function (m) { return m[key] > mine[key]; }).length;
+  }
+  function ordinal(n) {
+    const s = ["th", "st", "nd", "rd"], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  document.getElementById("badges").innerHTML = [
+    ["VALUE", "value"], ["STARTERS", "starters"], ["BENCH", "bench"],
+  ].map(function (b) {
+    return "<div class='badge'><div class='badge-num'>" + ordinal(rank(b[1])) + "</div>" +
+      "<div class='badge-label'>" + b[0] + "</div></div>";
+  }).join("");
+
+  document.getElementById("top5").innerHTML = players.slice(0, 5).map(function (p) {
+    return "<div class='top-player'>" +
+      "<img src='https://sleepercdn.com/content/nfl/players/thumb/" + esc(p.id) + ".jpg' alt='' " +
+      "onerror=\"this.style.visibility='hidden'\">" +
+      "<div class='top-meta'>" + esc(p.pos) + " | " + (p.value || "-") + "</div>" +
+      "<div class='top-name'>" + esc(p.name) + "</div></div>";
+  }).join("");
 
   document.getElementById("roster").innerHTML = players.map(function (p) {
     return "<div class='player'>" +

@@ -129,3 +129,35 @@ a { color: inherit; text-decoration: none; }
 .pname { font-weight: 800; }
 .pmeta { color: var(--grey); font-size: 12px; letter-spacing: 1px; margin-top: 2px; }
 .pvalue { font-weight: 900; font-size: 18px; font-variant-numeric: tabular-nums; }
+
+/* Hero card: rank badges + top 5 photo row */
+.badges { display: flex; gap: 10px; margin-top: 20px; }
+
+.badge {
+  flex: 1;
+  background: #fff;
+  color: #111;
+  border-radius: 8px;
+  text-align: center;
+  padding: 8px 4px;
+}
+.badge-num { font-size: 26px; font-weight: 900; line-height: 1; }
+.badge-label { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #555; margin-top: 4px; }
+
+.top5 {
+  display: flex;
+  gap: 4px;
+  padding: 16px 8px;
+  background: #14141c;
+  border-bottom: 1px solid #23232d;
+}
+.top-player { flex: 1; min-width: 0; text-align: center; }
+.top-player img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #23232d;
+}
+.top-meta { font-size: 10px; color: var(--grey); font-weight: 700; margin-top: 6px; letter-spacing: 0.5px; }
+.top-name { font-size: 12px; font-weight: 800; margin-top: 2px; line-height: 1.2; }
