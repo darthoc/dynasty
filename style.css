@@ -295,3 +295,13 @@ select.search { appearance: none; background-image: linear-gradient(45deg, trans
 .res.w { background: #3ddc84; color: #04210f; }
 .res.l { background: #ff5a5a; color: #2a0505; }
 .res.t { background: var(--grey); color: #111; }
+
+/* Record book */
+.rec-card { background: #14141c; border-left: 4px solid #ffd24a; border-radius: 6px; padding: 12px 14px; margin-bottom: 12px; }
+.rec-title { color: var(--grey); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.rec-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.rec-who { font-size: 18px; font-weight: 800; }
+.rec-who a { border-bottom: 2px solid var(--red); }
+.rec-val { font-size: 30px; font-weight: 900; font-style: italic; font-variant-numeric: tabular-nums; }
+.rec-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 6px 0; border-top: 1px solid #23232d; font-variant-numeric: tabular-nums; }
+.rec-row span:last-child { font-weight: 800; white-space: nowrap; }
