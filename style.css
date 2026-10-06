@@ -523,3 +523,56 @@ a.tip-go { display: inline-block; margin-top: 8px; padding: 6px 12px; border-rad
 .score { color: var(--lime); font-weight: 900; width: 44px; text-align: right; }
 .datechip { font-size: 10px; font-weight: 900; letter-spacing: 1px; color: var(--red); width: 44px; text-transform: uppercase; }
 a.tip-go { display: table; margin-top: 10px; }
+
+/* Team page (squad view) */
+.stat-tiles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.stat { min-width: 84px; padding: 8px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; text-align: center; }
+.stat-v { font-size: 20px; font-weight: 900; line-height: 1.1; }
+.stat-l { font-size: 10px; letter-spacing: 1.5px; font-weight: 800; color: var(--text-dim); margin-top: 2px; }
+.team-grid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr); gap: 14px; align-items: start; margin-top: 14px; }
+.team-side { display: flex; flex-direction: column; gap: 14px; }
+@media (max-width: 900px) { .team-grid { grid-template-columns: 1fr; } }
+.key-strip { display: flex; gap: 10px; padding: 12px 0 6px; overflow-x: auto; }
+.key-player { flex: 1 0 118px; text-align: center; padding: 6px 4px; border-radius: 8px; }
+.key-player:hover { background: var(--panel2); }
+.key-player img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--red); background: var(--panel2); }
+.key-meta { font-size: 10px; letter-spacing: 1px; color: var(--text-dim); font-weight: 800; margin-top: 6px; }
+.key-name { font-weight: 800; font-size: 13px; margin: 2px 0 3px; }
+table.squad { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.squad th { text-align: left; color: var(--text-dim); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+table.squad td { padding: 6px 6px; border-bottom: 1px solid #1d2358; vertical-align: middle; }
+table.squad tr:hover td { background: #171d4d; }
+table.squad .r { text-align: right; }
+table.squad tr.grp td { background: #0f1338; color: var(--red); font-size: 10px; font-weight: 900; letter-spacing: 2px; padding: 7px 8px; }
+.slot-tag { display: inline-block; min-width: 34px; text-align: center; padding: 2px 6px; border-radius: 4px; background: var(--panel2); border: 1px solid var(--line); font-size: 10px; font-weight: 900; color: var(--text-dim); }
+.pcell { display: flex; align-items: center; gap: 9px; }
+.pcell img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); background: var(--panel2); }
+.pn { font-weight: 800; }
+.ppos { font-size: 10px; font-weight: 900; letter-spacing: 1px; padding: 1px 6px; border-radius: 4px; background: var(--panel2); }
+.pos-QB { color: #ff7a9a; } .pos-RB { color: #39e58c; } .pos-WR { color: #4aa8ff; } .pos-TE { color: #ffc928; } .pos-K, .pos-DEF { color: #9aa3d6; }
+.tier-tag { font-size: 11px; font-weight: 800; white-space: nowrap; }
+.panel .row .pos.wk { width: 44px; font-size: 11px; letter-spacing: 1px; }
+.res.n { background: var(--panel2); color: var(--text-dim); }
+.scroll { max-height: 360px; overflow-y: auto; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rank-place { font-weight: 900; }
+.rank-place.good { color: var(--lime); } .rank-place.bad { color: #ff6b8b; } .rank-place.mid { color: #fff; }
+.tiers { display: flex; padding: 12px 0 6px; }
+.tier { flex: 1; text-align: center; }
+.tier-count { font-size: 22px; font-weight: 900; line-height: 1; }
+.tier-name { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: var(--text-dim); margin-top: 3px; }
+
+/* Squad table on phones: drop the NFL and Tier columns so it fits */
+#p-squad .panel-b { overflow-x: auto; }
+@media (max-width: 600px) {
+  table.squad th:nth-child(4), table.squad td:nth-child(4),
+  table.squad th:nth-child(5), table.squad td:nth-child(5) { display: none; }
+  table.squad tr.grp td { colspan: 4; }
+  .stat { min-width: 70px; padding: 7px 10px; }
+}
+@media (max-width: 600px) {
+  table.squad th:nth-child(3), table.squad td:nth-child(3) { display: none; }
+  table.squad td, table.squad th { padding-left: 4px; padding-right: 4px; }
+  .pcell { gap: 6px; }
+  .pn { font-size: 13px; }
+}

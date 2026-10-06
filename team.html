@@ -8,32 +8,28 @@
 </head>
 <body>
 
-  <div class="ticker"><a href="index.html">&larr; BACK TO STANDINGS</a></div>
+  <div class="ticker"><a href="standings.html">&larr; BACK TO STANDINGS</a></div>
 
   <header class="hero">
     <div class="kicker" id="team-kicker">TEAM</div>
     <h1 id="team-name">Loading...</h1>
     <div class="sub" id="team-sub"></div>
-    <div class="badges" id="badges"></div>
+    <div class="stat-tiles" id="stat-tiles"></div>
   </header>
 
-  <section class="top5" id="top5"></section>
-
   <main>
-    <h2 class="section-title">Roster Tiers</h2>
-    <div class="tiers" id="tiers"></div>
+    <section class="panel" id="p-key"><div class="panel-b">Loading...</div></section>
 
-    <h2 class="section-title">League Rankings</h2>
-    <div class="ranks" id="ranks"></div>
+    <div class="team-grid">
+      <section class="panel" id="p-squad"><div class="panel-b">Loading...</div></section>
 
-    <h2 class="section-title">Roster</h2>
-    <div id="roster"></div>
-    <a class="nav-link" id="tree-link" href="trees.html">Trade Tree &rarr;</a>
-    <a class="nav-link" id="h2h-link" href="h2h.html">Head-to-Head Records &rarr;</a>
-    <script>
-      document.getElementById("h2h-link").href = "h2h.html?team=" + new URLSearchParams(location.search).get("id");
-      document.getElementById("tree-link").href = "trees.html?team=" + new URLSearchParams(location.search).get("id");
-    </script>
+      <div class="team-side">
+        <section class="panel" id="p-fixtures"><div class="panel-b">Loading...</div></section>
+        <section class="panel" id="p-ranks"><div class="panel-b">Loading...</div></section>
+        <section class="panel" id="p-picks"><div class="panel-b">Loading...</div></section>
+        <section class="panel" id="p-trades"><div class="panel-b">Loading...</div></section>
+      </div>
+    </div>
   </main>
 
   <script src="common.js"></script>
