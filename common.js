@@ -43,6 +43,7 @@ async function loadTeams() {
     return {
       id: r.roster_id,
       name: teamName(userById[r.owner_id]),
+      username: ((userById[r.owner_id] || {}).display_name || "").trim(),
       wins: s.wins,
       losses: s.losses,
       ties: s.ties,

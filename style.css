@@ -261,3 +261,19 @@ a.player { color: inherit; }
 .via a { border-bottom: 1px solid #ff8a8a; }
 .slot.traded .slot-no { color: #ff8a8a; }
 .slot-val { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--grey); }
+
+/* Power rankings */
+.power-card { background: #14141c; border-radius: 6px; padding: 12px; margin-bottom: 12px; border-left: 4px solid var(--red); }
+.power-top { display: flex; align-items: center; gap: 12px; }
+.power-rank { font-size: 34px; font-weight: 900; font-style: italic; width: 44px; text-align: center; line-height: 1; }
+.power-name { flex: 1; font-weight: 800; font-size: 17px; }
+.power-name a { border-bottom: 2px solid var(--red); }
+.power-score { font-size: 22px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.bars { margin-top: 10px; }
+.bar { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 1px; color: var(--grey); margin-top: 4px; }
+.bar > span:first-child { width: 28px; }
+.bar > span:last-child { width: 24px; text-align: right; font-variant-numeric: tabular-nums; }
+.bar-track { flex: 1; height: 6px; background: #23232d; border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--red); }
+.blurb { margin-top: 10px; padding-top: 10px; border-top: 1px solid #2c2c38; font-size: 14px; line-height: 1.5; }
+.blurb.empty { color: var(--grey); font-style: italic; }

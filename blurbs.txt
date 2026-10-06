@@ -1,0 +1,14 @@
+# POWER RANKINGS BLURBS
+#
+# This is the only file you need to edit each week.
+# One line per team, like this:
+#
+#     Abergil: Trey McBride and a whole lot of confidence.
+#
+# - Start each line with the manager's Sleeper username OR their team name,
+#   then a colon, then whatever you want to say. Capital letters don't matter.
+# - A team with no line just shows "No blurb this week".
+# - The line below sets the week shown at the top of the page. Change the number weekly.
+# - Any line that starts with # is ignored (like these).
+#
+week: 5
