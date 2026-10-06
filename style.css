@@ -248,3 +248,16 @@ a.player { color: inherit; }
 .chip.got { background: #3a1214; border: 1px solid var(--red); }
 .chip .from { color: var(--grey); font-weight: 700; font-size: 11px; }
 .away { color: var(--grey); font-size: 12px; margin-top: 10px; line-height: 1.5; }
+
+/* Projected draft order */
+.tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.tab { flex: 1; padding: 10px 0; background: #14141c; color: var(--grey); border: 1px solid #2c2c38; border-radius: 6px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; font-size: 12px; cursor: pointer; }
+.tab.on { background: var(--red); color: var(--white); border-color: var(--red); }
+.slot { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #23232d; }
+.slot-no { width: 52px; font-size: 20px; font-weight: 900; font-style: italic; }
+.slot-info { flex: 1; }
+.slot-team { font-weight: 800; }
+.via { font-size: 12px; color: #ff8a8a; margin-top: 2px; }
+.via a { border-bottom: 1px solid #ff8a8a; }
+.slot.traded .slot-no { color: #ff8a8a; }
+.slot-val { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--grey); }

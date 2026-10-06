@@ -241,6 +241,15 @@ async function loadPickData() {
     teams: teams,
     teamById: byId,
     valueOf: valueOf,
+    standings: base.teams,
+    ownerOf: function (year, round, original) {
+      return owner[year + "-" + round + "-" + original] || original;
+    },
+    // Value of a specific draft slot, using FantasyCalc's Early / Mid / Late tiers
+    slotValue: function (year, round, slot) {
+      const tier = slot <= 4 ? "Early" : slot <= 8 ? "Mid" : "Late";
+      return pickValue[year + " " + ordinal(round) + " (" + tier + ")"] || valueOf(year, round);
+    },
     draftFor: function (year) {
       return drafts.filter(function (d) { return Number(d.season) === year; })[0] || null;
     },

@@ -14,6 +14,37 @@ async function loadPicks() {
       (draft.start_time ? " • " + new Date(draft.start_time).toLocaleString() : "")
     : "<b>" + first + " ROOKIE DRAFT</b><br>Not scheduled yet. It opens in Sleeper after the " + data.league.season + " season.";
 
+  // ---- Projected draft order: worst record picks first, same order every round ----
+  const order = data.standings.slice().sort(function (a, b) { return bySeed(b, a); });
+  document.getElementById("order-title").textContent = "Projected " + first + " Draft Order";
+
+  function drawRound(round) {
+    document.getElementById("round-tabs").innerHTML = [1, 2, 3].slice(0, data.rounds).map(function (r) {
+      return "<button class='tab" + (r === round ? " on" : "") + "' data-round='" + r + "'>Round " + r + "</button>";
+    }).join("");
+
+    document.getElementById("order-list").innerHTML = order.map(function (t, i) {
+      const slot = i + 1;
+      const owner = data.ownerOf(first, round, t.id);
+      const via = owner !== t.id
+        ? "<div class='via'>owned by <a href='team.html?id=" + owner + "'>" + esc(data.teamById[owner].name) + "</a></div>"
+        : "";
+      return "<div class='slot" + (owner !== t.id ? " traded" : "") + "'>" +
+        "<div class='slot-no'>" + round + "." + String(slot).padStart(2, "0") + "</div>" +
+        "<div class='slot-info'><div class='slot-team'>" + esc(t.name) + "'s pick <span class='dim'>" +
+        t.wins + "-" + t.losses + (t.ties ? "-" + t.ties : "") + "</span></div>" + via + "</div>" +
+        "<div class='slot-val'>" + data.slotValue(first, round, slot).toLocaleString() + "</div></div>";
+    }).join("");
+
+    document.querySelectorAll(".tab").forEach(function (b) {
+      b.addEventListener("click", function () { drawRound(Number(b.dataset.round)); });
+    });
+  }
+  drawRound(1);
+  document.getElementById("order-note").textContent =
+    "Projection assumes the worst current record picks first (fewer points scored breaks ties) and a linear draft, with the same order every round. " +
+    "The real order is set after the season, so this moves every week.";
+
   // Richest pick capital first
   const teams = data.teams.slice().sort(function (a, b) { return b.total - a.total; });
 
