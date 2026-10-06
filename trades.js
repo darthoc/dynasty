@@ -53,12 +53,12 @@ async function loadTrades() {
         const v = playerValue(pid);
         total += v;
         items.push("<div class='asset'><span>" + esc(playerName(pid)) +
-          " <span class='dim'>" + esc(playerPos(pid)) + "</span></span><span>" + (v || "-") + "</span></div>");
+          " <span class='dim'>" + esc(playerPos(pid)) + "</span></span><span>" + (v ? starsHtml(v) : "-") + "</span></div>");
       });
       s.picks.forEach(function (p) {
         const d = describePick(p);
         total += d.value;
-        items.push("<div class='asset'><span>" + d.html + "</span><span>" + (d.value || "-") + "</span></div>");
+        items.push("<div class='asset'><span>" + d.html + "</span><span>" + (d.value ? starsHtml(d.value) : "-") + "</span></div>");
       });
       if (s.faab) items.push("<div class='asset'><span>$" + s.faab + " FAAB</span><span>-</span></div>");
       return { id: id, items: items, total: total };

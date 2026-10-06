@@ -13,7 +13,7 @@ async function loadHistory() {
       ? "<a class='tlink' href='trees.html?p=" + esc(it.id) + "'>" + esc(it.name) + "</a> <span class='dim'>" +
         esc(it.pos) + (it.nflTeam ? " • " + esc(it.nflTeam) : "") + "</span>"
       : esc(it.name) + " <span class='dim'>(" + esc(it.originalTeam) + ")</span>";
-    return "<div class='asset'><span>" + label + "</span><span>" + (it.value || "-") + "</span></div>";
+    return "<div class='asset'><span>" + label + "</span><span>" + (it.value ? starsHtml(it.value) : "-") + "</span></div>";
   }
 
   document.getElementById("history-list").innerHTML = history.map(function (h) {

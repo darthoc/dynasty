@@ -114,7 +114,8 @@ async function loadTeam() {
       "<img src='https://sleepercdn.com/content/nfl/players/thumb/" + esc(p.id) + ".jpg' alt='' " +
       "onerror=\"this.style.visibility='hidden'\">" +
       "<div class='top-meta'>" + esc(p.pos) + "</div>" +
-      "<div class='top-name'>" + esc(p.name) + "</div></div>";
+      "<div class='top-name'>" + esc(p.name) + "</div>" +
+      "<div class='top-stars'>" + starsHtml(p.value) + "</div></div>";
   }).join("");
 
   document.getElementById("roster").innerHTML = players.map(function (p) {
@@ -123,7 +124,7 @@ async function loadTeam() {
       "onerror=\"this.style.visibility='hidden'\">" +
       "<div class='pinfo'><div class='pname'>" + esc(p.name) + "</div>" +
       "<div class='pmeta'>" + esc(p.pos) + " • AGE " + esc(p.age) + "</div></div>" +
-      "<div class='pvalue'>" + (p.value || "-") + "</div></div>";
+      "<div class='pvalue'>" + (p.value ? starsHtml(p.value) : "") + "</div></div>";
   }).join("");
 }
 

@@ -84,7 +84,7 @@ async function loadTrees() {
   }
   function assetHtml(key, team) {
     const val = valueOfKey(key);
-    const valHtml = val ? " <span class='tt-val'>" + val.toLocaleString() + "</span>" : "";
+    const valHtml = val ? " " + starsHtml(val) : "";
     if (key[0] === "p") {
       const id = key.slice(2);
       return "<a href='trees.html?p=" + esc(id) + "'>" + esc(playerName(id)) + "</a> <span class='dim'>" + esc(playerPos(id)) + "</span>" + valHtml;

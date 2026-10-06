@@ -84,7 +84,7 @@ async function loadPicks() {
         "<div class='slot-no'>" + round + "." + String(slot).padStart(2, "0") + "</div>" +
         "<div class='slot-info'><div class='slot-team'>" + esc(headline) + "'s pick" +
         (traded ? "" : " <span class='dim'>" + record + "</span>") + "</div>" + via + "</div>" +
-        "<div class='slot-val'>" + data.slotValue(first, round, slot).toLocaleString() + "</div>" + tip + "</" + tag + ">";
+        "<div class='slot-val'>" + starsHtml(data.slotValue(first, round, slot)) + "</div>" + tip + "</" + tag + ">";
     }).join("");
 
     document.querySelectorAll("div.slot.traded").forEach(function (s) {

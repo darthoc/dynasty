@@ -288,3 +288,16 @@ async function loadGames(league) {
   });
   return games;
 }
+
+
+// ---------- Star ratings (like Football Manager) ----------
+// A player's FantasyCalc value becomes 0.5 to 5 stars, in half-star steps.
+function starRating(value) {
+  const cuts = [[7000, 5], [5500, 4.5], [4000, 4], [3000, 3.5], [2200, 3], [1500, 2.5], [1000, 2], [500, 1.5], [200, 1], [1, 0.5]];
+  for (let i = 0; i < cuts.length; i++) if (value >= cuts[i][0]) return cuts[i][1];
+  return 0;
+}
+function starsHtml(value) {
+  const s = starRating(value);
+  return "<span class='stars' style='--s:" + s + "' title='" + s + " out of 5'>\u2605\u2605\u2605\u2605\u2605</span>";
+}
