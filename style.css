@@ -232,3 +232,19 @@ a.player { color: inherit; }
 .moved { font-size: 34px; font-weight: 900; font-style: italic; line-height: 1; margin-bottom: 12px; }
 .moved span { font-size: 11px; font-style: normal; letter-spacing: 2px; color: var(--grey); }
 .tlink { border-bottom: 1px solid var(--grey); }
+
+/* Pick tracker */
+.draft-banner { background: #14141c; border-left: 4px solid #ffd24a; border-radius: 6px; padding: 12px 14px; margin-bottom: 22px; font-size: 14px; line-height: 1.5; }
+.draft-banner b { letter-spacing: 1px; }
+.pick-card { background: #14141c; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+.pick-head { display: flex; align-items: center; gap: 10px; font-weight: 800; padding-bottom: 8px; border-bottom: 1px solid #2c2c38; }
+.pick-head a { flex: 1; border-bottom: 2px solid var(--red); align-self: flex-start; }
+.pick-rank { color: var(--grey); width: 20px; }
+.pick-total { font-weight: 900; font-variant-numeric: tabular-nums; }
+.pick-row { display: flex; gap: 10px; padding: 8px 0 0; align-items: baseline; }
+.pick-year { width: 42px; color: var(--grey); font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.pick-chips { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: #23232d; border-radius: 4px; padding: 3px 8px; font-size: 13px; font-weight: 800; }
+.chip.got { background: #3a1214; border: 1px solid var(--red); }
+.chip .from { color: var(--grey); font-weight: 700; font-size: 11px; }
+.away { color: var(--grey); font-size: 12px; margin-top: 10px; line-height: 1.5; }

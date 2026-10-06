@@ -187,3 +187,62 @@ async function loadTradeData() {
     },
   };
 }
+
+// ---------- Future picks ----------
+
+// Who owns every future rookie-draft pick, and what each pick is worth.
+// Returns { league, years, rounds, teams: [{ id, name, owned, away, total }], draftFor(year) }
+//   owned: [{ year, round, from }]   from = the original team's id if the pick was acquired in a trade
+//   away:  [{ year, round, to }]     picks this team traded away
+async function loadPickData() {
+  const base = await loadTeams();
+  const league = base.league;
+  const [traded, values, drafts] = await Promise.all([
+    getJSON(API + "/traded_picks"),
+    getJSON(VALUES_URL),
+    getJSON(API + "/drafts"),
+  ]);
+
+  const season = Number(league.season);
+  const years = [season + 1, season + 2, season + 3];
+  const rounds = league.settings.draft_rounds;
+
+  const pickValue = {};
+  values.forEach(function (v) { if (v.player.position === "PICK") pickValue[v.player.name] = v.value; });
+  function valueOf(year, round) { return pickValue[year + " " + ordinal(round)] || 0; }
+
+  // Everyone starts owning their own pick; a trade changes the owner
+  const owner = {};
+  traded.forEach(function (tp) {
+    owner[tp.season + "-" + tp.round + "-" + tp.roster_id] = tp.owner_id;
+  });
+
+  const teams = base.teams.map(function (t) {
+    return { id: t.id, name: t.name, owned: [], away: [], total: 0 };
+  });
+  const byId = {};
+  teams.forEach(function (t) { byId[t.id] = t; });
+
+  years.forEach(function (year) {
+    for (let round = 1; round <= rounds; round++) {
+      base.teams.forEach(function (orig) {
+        const now = owner[year + "-" + round + "-" + orig.id] || orig.id;
+        byId[now].owned.push({ year: year, round: round, from: now === orig.id ? null : orig.id });
+        byId[now].total += valueOf(year, round);
+        if (now !== orig.id) byId[orig.id].away.push({ year: year, round: round, to: now });
+      });
+    }
+  });
+
+  return {
+    league: league,
+    years: years,
+    rounds: rounds,
+    teams: teams,
+    teamById: byId,
+    valueOf: valueOf,
+    draftFor: function (year) {
+      return drafts.filter(function (d) { return Number(d.season) === year; })[0] || null;
+    },
+  };
+}
