@@ -116,5 +116,57 @@
         "total": 12707
       }
     ]
+  },
+  {
+    "id": "1415093615125897216",
+    "created": 1791747118316,
+    "moved": 9995,
+    "frozenAt": 1791770695411,
+    "sides": [
+      {
+        "teamId": 1,
+        "team": "Abergil",
+        "items": [
+          {
+            "type": "player",
+            "id": "12517",
+            "name": "Colston Loveland",
+            "pos": "TE",
+            "nflTeam": "CHI",
+            "value": 3369
+          },
+          {
+            "type": "pick",
+            "name": "2027 2nd-round pick",
+            "originalTeam": "Alex",
+            "value": 1509
+          }
+        ],
+        "total": 4878
+      },
+      {
+        "teamId": 3,
+        "team": "Alex",
+        "items": [
+          {
+            "type": "player",
+            "id": "4881",
+            "name": "Lamar Jackson",
+            "pos": "QB",
+            "nflTeam": "BAL",
+            "value": 3458
+          },
+          {
+            "type": "player",
+            "id": "12495",
+            "name": "Ollie Gordon",
+            "pos": "RB",
+            "nflTeam": "MIA",
+            "value": 1659
+          }
+        ],
+        "total": 5117
+      }
+    ]
   }
 ]
