@@ -29,8 +29,11 @@ async function loadPower() {
 
   computePower(teams, data.rosters, values);
 
-  document.getElementById("power-sub").textContent =
-    "WEEK " + (blurbData.week || data.league.settings.leg);
+  // The week follows the real NFL week by itself (a "week:" line in blurbs.txt can override it)
+  const state = await getJSON("https://api.sleeper.app/v1/state/nfl").catch(function () { return null; });
+  const settings = data.league.settings;
+  const nflWeek = state && state.season_type === "regular" ? Math.min(state.week, settings.playoff_week_start - 1) : settings.leg;
+  document.getElementById("power-sub").textContent = "WEEK " + (blurbData.week || nflWeek);
 
   document.getElementById("power-list").innerHTML = teams.map(function (t, i) {
     const blurb = blurbData.blurbs[t.name.toLowerCase()] || blurbData.blurbs[t.username.toLowerCase()];

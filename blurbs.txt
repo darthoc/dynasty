@@ -8,7 +8,7 @@
 # - Start each line with the manager's Sleeper username OR their team name,
 #   then a colon, then whatever you want to say. Capital letters don't matter.
 # - A team with no line just shows "No blurb this week".
-# - The line below sets the week shown at the top of the page. Change the number weekly.
+# - The week shown at the top of the page follows the NFL week by itself.
+#   (Only if you ever want to force a different number, add a line like:  week: 7 )
 # - Any line that starts with # is ignored (like these).
 #
-week: 5
